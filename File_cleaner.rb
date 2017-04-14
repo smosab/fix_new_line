@@ -19,7 +19,7 @@ def decode_html(row)
 	if row[9]
 		row[9] = HtmlToPlainText
 				.plain_text(row[9])
-				.gsub!(/[^0-9A-Za-z:\s()_\[\]!@#$%^&*+-={}~;'.,]/, '')
+				.gsub!(/[^0-9A-Za-z:\s()_\[\]!@#$%^&*\/+-={}~;'.,]/, '')
 	end
 end
 
