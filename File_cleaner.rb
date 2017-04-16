@@ -9,18 +9,26 @@ csv_files = Dir["sandbox/*.TXT"] #File or extension to look for
 
 # this method removes any delimiting characters being used to seperate fields from within each field(mainly from text/comment fields) 
 def remove_delim(row)
+
 	row.each do |f|
 		f.gsub!(/@regex_delim|\r\n|\r|\n|\\/,'') if f
 	end
 	row
 end
 
+def contains_special_chars?(field)
+	field.match /[^0-9A-Za-z:\s()_\[\]!@#$%^&*\/+-={}~;'.,]/
+end
+
 def decode_html(row)
-	if row[9]
+	# binding.pry if row[0] == '17'
 		row[9] = HtmlToPlainText
-				.plain_text(row[9])
-				.gsub!(/[^0-9A-Za-z:\s()_\[\]!@#$%^&*\/+-={}~;'.,]/, '')
-	end
+				.plain_text(row[9]) if row[9]
+				#.gsub!(/[^0-9A-Za-z:\s()_\[\]!@#$%^&*\/+-={}~;'.,]/, '') if row[9] && contains_special_chars?(row[9])
+
+		row[10] = HtmlToPlainText
+				.plain_text(row[10]) if row[9]
+				#.gsub!(/[^0-9A-Za-z:\s()_\[\]!@#$%^&*\/+-={}~;'.,]/, '') if row[10] && contains_special_chars?(row[10])
 end
 
 
@@ -49,6 +57,7 @@ csv_files.each do |file|
 
 	CSV.open("#{file}.out", "w", {:col_sep => @delim}) do |csv_obj|
 		CSV.foreach("#{file}.tmp", {:headers => false, :col_sep => @delim } ).with_index do |row, i|
+
 			csv_obj << fix(row).each {|row| row.force_encoding("IBM437") if row }
 		end
 
