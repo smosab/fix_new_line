@@ -21,14 +21,19 @@ def contains_special_chars?(field)
 end
 
 def decode_html(row)
-	# binding.pry if row[0] == '17'
-		row[9] = HtmlToPlainText
-				.plain_text(row[9]) if row[9]
+# binding.pry
+		# row[9] = HtmlToPlainText
+		# 		.plain_text(row[9]) if row[9]
 				#.gsub!(/[^0-9A-Za-z:\s()_\[\]!@#$%^&*\/+-={}~;'.,]/, '') if row[9] && contains_special_chars?(row[9])
 
-		row[10] = HtmlToPlainText
-				.plain_text(row[10]) if row[9]
+		# row[10] = HtmlToPlainText
+		# 		.plain_text(row[10]) if row[9]
 				#.gsub!(/[^0-9A-Za-z:\s()_\[\]!@#$%^&*\/+-={}~;'.,]/, '') if row[10] && contains_special_chars?(row[10])
+
+	row.each_with_index do |f,i|
+		row[i] = HtmlToPlainText.plain_text(row[i]) if f
+	end
+
 end
 
 
